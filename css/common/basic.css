@@ -130,7 +130,7 @@
   --note-type-title-bg: #4e3a1e;
   --note-black-title-bg: #1e1e1e;
   --note-purple-title-bg: #4e1e4e;
-  --home-banner-text-color: #d1d1b6;
+  --home-banner-text-color: #ddd;
   --home-banner-icons-container-border-color: rgba(197,197,197,0.35);
   --home-banner-icons-container-background-color: rgba(197,197,197,0.3);
   --redefine-box-shadow: var(--shadow-color-2) 0px 6px 24px 0px, var(--shadow-color-1) 0px 0px 0px 1px;
@@ -296,7 +296,7 @@ body {
   font-family: Geist Variable, Noto Sans SC, -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial;
   font-weight: 400;
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 1.6;
   --navbar-height: 70px;
 }
 html::-webkit-scrollbar,
@@ -329,14 +329,14 @@ body::-webkit-scrollbar-thumb:hover {
   html,
   body {
     font-size: 15.36px;
-    line-height: 1.44;
+    line-height: 1.536;
   }
 }
 @media (max-width: 640px) {
   html,
   body {
     font-size: 14.4px;
-    line-height: 1.35;
+    line-height: 1.44;
   }
 }
 html .navbar-shrink,
