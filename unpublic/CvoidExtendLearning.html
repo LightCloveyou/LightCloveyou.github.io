@@ -123,7 +123,7 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://LightCloveyou.github.io/404.html"/>
+    <link rel="canonical" href="https://LightCloveyou.github.io/unpublic/cvoidextendlearning.html"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
@@ -133,12 +133,14 @@
         
         <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Page Not Found">
-<meta property="og:url" content="https://lightcloveyou.github.io/404.html">
+<meta property="og:title" content="CvoidExtendLearning">
+<meta property="og:url" content="https://lightcloveyou.github.io/unpublic/CvoidExtendLearning.html">
 <meta property="og:site_name" content="LightCloveyou&#39;s Blog">
 <meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lightcloveyou.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2025-10-31T11:04:06.000Z">
+<meta property="article:modified_time" content="2025-11-07T09:01:33.316Z">
 <meta property="article:author" content="LightCloveyou">
 <meta property="article:tag" content="LightCloveyou,PWN">
 <meta name="twitter:card" content="summary">
@@ -154,7 +156,7 @@
     
     <title>
         
-            Page Not Found | LightCloveyou&#39;s Blog
+            CvoidExtendLearning | LightCloveyou&#39;s Blog
         
     </title>
 
@@ -509,15 +511,505 @@
 			
 
 			<div class="main-content">
-				<div class="nf-container">
-    <div class="nf-text">
-        <h1>404<br>Page Not Found</h1>
-    </div>
-    <div class="nf-button">
-        <a href="/" class="button large center"><i class="fa-regular fa-house"></i> 回到首页</a>
-    </div>
+				<div class="page-template-container">
+	
+
+	
+
+	<div class="page-template-content markdown-body">
+		
+		<h1>CvoidExtendLearning</h1>
+		
+
+		<h3 id="gmp">gmp</h3>
+<h4 id="一整数类型mpz_t-最常用"><strong>一、整数类型（<code>mpz_t</code>）—— 最常用</strong></h4>
+<p><code>mpz_t</code> 用于任意精度整数运算，函数前缀为 <code>mpz_</code>。</p>
+<h5 id="初始化与释放">1. <strong>初始化与释放</strong></h5>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>功能描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>void mpz_init(mpz_t x)</code></td>
+<td>初始化变量 <code>x</code>，初始值为 0</td>
+<td><code>mpz_t a; mpz_init(a);</code></td>
+</tr>
+<tr class="even">
+<td><code>void mpz_init2(mpz_t x, unsigned long n)</code></td>
+<td>初始化 <code>x</code> 并预分配 <code>n</code> 位存储空间</td>
+<td><code>mpz_init2(a, 1024);</code>（支持 1024 位整数）</td>
+</tr>
+<tr class="odd">
+<td><code>void mpz_clear(mpz_t x)</code></td>
+<td>释放 <code>x</code> 占用的内存（必须调用）</td>
+<td><code>mpz_clear(a);</code></td>
+</tr>
+<tr class="even">
+<td><code>void mpz_inits(mpz_t x, ...)</code></td>
+<td>同时初始化多个变量（以 <code>NULL</code> 结尾）</td>
+<td><code>mpz_inits(a, b, c, NULL);</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="赋值操作">2. <strong>赋值操作</strong></h5>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>功能描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>void mpz_set(mpz_t rop, const mpz_t op)</code></td>
+<td>将 <code>op</code> 的值赋给 <code>rop</code>（<code>rop = op</code>）</td>
+<td><code>mpz_set(a, b);</code>（<code>a</code> 等于 <code>b</code>）</td>
+</tr>
+<tr class="even">
+<td><code>void mpz_set_ui(mpz_t rop, unsigned long op)</code></td>
+<td>用无符号整数 <code>op</code> 赋值给 <code>rop</code></td>
+<td><code>mpz_set_ui(a, 123);</code>（<code>a = 123</code>）</td>
+</tr>
+<tr class="odd">
+<td><code>void mpz_set_si(mpz_t rop, long op)</code></td>
+<td>用有符号整数 <code>op</code> 赋值给 <code>rop</code></td>
+<td><code>mpz_set_si(a, -456);</code>（<code>a = -456</code>）</td>
+</tr>
+<tr class="even">
+<td><code>int mpz_set_str(mpz_t rop, const char *str, int base)</code></td>
+<td>用字符串 <code>str</code> 按 <code>base</code> 进制赋值（<code>base</code> 2-62 或 0，0 表示自动识别）</td>
+<td><code>mpz_set_str(a, "123abc", 16);</code>（16 进制字符串赋值）</td>
+</tr>
+</tbody>
+</table>
+<h5 id="算术运算">3. <strong>算术运算</strong></h5>
+<table>
+<colgroup>
+<col style="width: 51%" />
+<col style="width: 24%" />
+<col style="width: 23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>功能描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>void mpz_add(mpz_t rop, const mpz_t op1, const mpz_t op2)</code></td>
+<td>加法：<code>rop = op1 + op2</code></td>
+<td><code>mpz_add(c, a, b);</code></td>
+</tr>
+<tr class="even">
+<td><code>void mpz_sub(mpz_t rop, const mpz_t op1, const mpz_t op2)</code></td>
+<td>减法：<code>rop = op1 - op2</code></td>
+<td><code>mpz_sub(c, a, b);</code></td>
+</tr>
+<tr class="odd">
+<td><code>void mpz_mul(mpz_t rop, const mpz_t op1, const mpz_t op2)</code></td>
+<td>乘法：<code>rop = op1 * op2</code></td>
+<td><code>mpz_mul(c, a, b);</code></td>
+</tr>
+<tr class="even">
+<td><code>void mpz_div_q(mpz_t rop, const mpz_t op1, const mpz_t op2)</code></td>
+<td>除法（商）：<code>rop = op1 / op2</code>（向 0 取整）</td>
+<td><code>mpz_div_q(q, a, b);</code>（<code>q</code> 为商）</td>
+</tr>
+<tr class="odd">
+<td><code>void mpz_div_r(mpz_t rop, const mpz_t op1, const mpz_t op2)</code></td>
+<td>除法（余数）：<code>rop = op1 % op2</code></td>
+<td><code>mpz_div_r(r, a, b);</code>（<code>r</code> 为余数）</td>
+</tr>
+<tr class="even">
+<td><code>void mpz_div_qr(mpz_t q, mpz_t r, const mpz_t n, const mpz_t d)</code></td>
+<td>同时求商和余数：<code>n = q*d + r</code></td>
+<td><code>mpz_div_qr(q, r, a, b);</code></td>
+</tr>
+<tr class="odd">
+<td><code>void mpz_mod(mpz_t rop, const mpz_t op1, const mpz_t op2)</code></td>
+<td>模运算：<code>rop = op1 mod op2</code>（同余数）</td>
+<td><code>mpz_mod(r, a, b);</code></td>
+</tr>
+<tr class="even">
+<td><code>void mpz_pow_ui(mpz_t rop, const mpz_t base, unsigned long exp)</code></td>
+<td>幂运算：<code>rop = base^exp</code>（指数为无符号整数）</td>
+<td><code>mpz_pow_ui(c, a, 5);</code>（<code>a^5</code>）</td>
+</tr>
+<tr class="odd">
+<td><code>void mpz_neg(mpz_t rop, const mpz_t op)</code></td>
+<td>取反：<code>rop = -op</code></td>
+<td><code>mpz_neg(b, a);</code>（<code>b = -a</code>）</td>
+</tr>
+</tbody>
+</table>
+<h5 id="比较操作">4. <strong>比较操作</strong></h5>
+<table>
+<colgroup>
+<col style="width: 39%" />
+<col style="width: 36%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>功能描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>int mpz_cmp(const mpz_t op1, const mpz_t op2)</code></td>
+<td>比较 <code>op1</code> 和 <code>op2</code>：返回 &gt;0（op1&gt;op2）、0（相等）、&lt;0（op1&lt;op2）</td>
+<td><code>if (mpz_cmp(a, b) &gt; 0) { ... }</code></td>
+</tr>
+<tr class="even">
+<td><code>int mpz_cmp_ui(const mpz_t op1, unsigned long op2)</code></td>
+<td>比较 <code>op1</code> 和无符号整数 <code>op2</code></td>
+<td><code>mpz_cmp_ui(a, 100);</code></td>
+</tr>
+<tr class="odd">
+<td><code>int mpz_cmp_si(const mpz_t op1, long op2)</code></td>
+<td>比较 <code>op1</code> 和有符号整数 <code>op2</code></td>
+<td><code>mpz_cmp_si(a, -50);</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="输入输出">5. <strong>输入输出</strong></h5>
+<table>
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 23%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>功能描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>size_t mpz_out_str(FILE *stream, int base, const mpz_t op)</code></td>
+<td>输出 <code>op</code> 到文件流 <code>stream</code>（<code>base</code> 进制）</td>
+<td><code>mpz_out_str(stdout, 10, a);</code>（ stdout 输出 10 进制）</td>
+</tr>
+<tr class="even">
+<td><code>int mpz_inp_str(mpz_t rop, FILE *stream, int base)</code></td>
+<td>从文件流读取字符串赋值给 <code>rop</code></td>
+<td><code>mpz_inp_str(a, stdin, 10);</code>（从 stdin 读 10 进制）</td>
+</tr>
+<tr class="odd">
+<td><code>int gmp_printf(const char *fmt, ...)</code></td>
+<td>GMP 专用格式化输出（支持 <code>%Zd</code> 等）</td>
+<td><code>gmp_printf("a = %Zd\n", a);</code></td>
+</tr>
+<tr class="even">
+<td><code>int gmp_scanf(const char *fmt, ...)</code></td>
+<td>GMP 专用格式化输入</td>
+<td><code>gmp_scanf("输入a: %Zd", a);</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="二有理数类型mpq_t-分数运算"><strong>二、有理数类型（<code>mpq_t</code>）—— 分数运算</strong></h4>
+<p><code>mpq_t</code> 用于任意精度有理数（分数）运算，自动约分，函数前缀为 <code>mpq_</code>。</p>
+<h5 id="初始化与释放-1">1. <strong>初始化与释放</strong></h5>
+<table>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>功能描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>void mpq_init(mpq_t q)</code></td>
+<td>初始化分数 <code>q</code>（默认 0/1）</td>
+<td><code>mpq_t q; mpq_init(q);</code></td>
+</tr>
+<tr class="even">
+<td><code>void mpq_clear(mpq_t q)</code></td>
+<td>释放 <code>q</code> 的内存</td>
+<td><code>mpq_clear(q);</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="赋值与分子分母操作">2. <strong>赋值与分子分母操作</strong></h5>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>功能描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>void mpq_set(mpq_t rop, const mpq_t op)</code></td>
+<td>赋值：<code>rop = op</code></td>
+<td><code>mpq_set(a, b);</code></td>
+</tr>
+<tr class="even">
+<td><code>void mpq_set_ui(mpq_t rop, unsigned long num, unsigned long den)</code></td>
+<td>用分子 <code>num</code>、分母 <code>den</code> 赋值（自动约分）</td>
+<td><code>mpq_set_ui(q, 2, 4);</code>（结果为 1/2）</td>
+</tr>
+<tr class="odd">
+<td><code>void mpq_set_num(mpq_t q, const mpz_t num)</code></td>
+<td>设置分子（需手动调用 <code>mpq_canonicalize</code> 约分）</td>
+<td><code>mpq_set_num(q, a);</code>（<code>a</code> 是 <code>mpz_t</code> 变量）</td>
+</tr>
+<tr class="even">
+<td><code>void mpq_set_den(mpq_t q, const mpz_t den)</code></td>
+<td>设置分母（需为正，自动转为正数）</td>
+<td><code>mpq_set_den(q, b);</code></td>
+</tr>
+<tr class="odd">
+<td><code>mpz_t *mpq_numref(const mpq_t q)</code></td>
+<td>获取分子的指针（可直接操作）</td>
+<td><code>mpz_t *num = mpq_numref(q);</code></td>
+</tr>
+<tr class="even">
+<td><code>mpz_t *mpq_denref(const mpq_t q)</code></td>
+<td>获取分母的指针（可直接操作）</td>
+<td><code>mpz_t *den = mpq_denref(q);</code></td>
+</tr>
+<tr class="odd">
+<td><code>void mpq_canonicalize(mpq_t q)</code></td>
+<td>约分（确保分母为正，分子分母互质）</td>
+<td><code>mpq_canonicalize(q);</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="算术运算-1">3. <strong>算术运算</strong></h5>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>功能描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>void mpq_add(mpq_t rop, const mpq_t op1, const mpq_t op2)</code></td>
+<td>加法：<code>rop = op1 + op2</code></td>
+<td><code>mpq_add(c, a, b);</code></td>
+</tr>
+<tr class="even">
+<td><code>void mpq_sub(mpq_t rop, const mpq_t op1, const mpq_t op2)</code></td>
+<td>减法：<code>rop = op1 - op2</code></td>
+<td><code>mpq_sub(c, a, b);</code></td>
+</tr>
+<tr class="odd">
+<td><code>void mpq_mul(mpq_t rop, const mpq_t op1, const mpq_t op2)</code></td>
+<td>乘法：<code>rop = op1 * op2</code></td>
+<td><code>mpq_mul(c, a, b);</code></td>
+</tr>
+<tr class="even">
+<td><code>void mpq_div(mpq_t rop, const mpq_t op1, const mpq_t op2)</code></td>
+<td>除法：<code>rop = op1 / op2</code></td>
+<td><code>mpq_div(c, a, b);</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="三浮点数类型mpf_t-高精度小数"><strong>三、浮点数类型（<code>mpf_t</code>）—— 高精度小数</strong></h4>
+<p><code>mpf_t</code> 用于任意精度浮点数运算，精度可自定义，函数前缀为 <code>mpf_</code>。</p>
+<h5 id="初始化与精度设置">1. <strong>初始化与精度设置</strong></h5>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>功能描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>void mpf_init(mpf_t x)</code></td>
+<td>初始化浮点数 <code>x</code>（默认精度 64 位）</td>
+<td><code>mpf_t f; mpf_init(f);</code></td>
+</tr>
+<tr class="even">
+<td><code>void mpf_init2(mpf_t x, unsigned long n)</code></td>
+<td>初始化 <code>x</code> 并设置精度为 <code>n</code> 位（二进制位）</td>
+<td><code>mpf_init2(f, 1024);</code>（1024 位精度）</td>
+</tr>
+<tr class="odd">
+<td><code>void mpf_set_default_prec(unsigned long n)</code></td>
+<td>设置后续初始化变量的默认精度</td>
+<td><code>mpf_set_default_prec(2048);</code></td>
+</tr>
+<tr class="even">
+<td><code>void mpf_clear(mpf_t x)</code></td>
+<td>释放 <code>x</code> 的内存</td>
+<td><code>mpf_clear(f);</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="赋值与运算">2. <strong>赋值与运算</strong></h5>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>功能描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>void mpf_set(mpf_t rop, const mpf_t op)</code></td>
+<td>赋值：<code>rop = op</code></td>
+<td><code>mpf_set(a, b);</code></td>
+</tr>
+<tr class="even">
+<td><code>void mpf_set_d(mpf_t rop, double op)</code></td>
+<td>用 <code>double</code> 赋值给 <code>rop</code></td>
+<td><code>mpf_set_d(f, 3.14159);</code></td>
+</tr>
+<tr class="odd">
+<td><code>void mpf_set_ui(mpf_t rop, unsigned long op)</code></td>
+<td>用无符号整数赋值</td>
+<td><code>mpf_set_ui(f, 123);</code></td>
+</tr>
+<tr class="even">
+<td><code>void mpf_add(mpf_t rop, const mpf_t op1, const mpf_t op2)</code></td>
+<td>加法：<code>rop = op1 + op2</code></td>
+<td><code>mpf_add(c, a, b);</code></td>
+</tr>
+<tr class="odd">
+<td><code>void mpf_mul(mpf_t rop, const mpf_t op1, const mpf_t op2)</code></td>
+<td>乘法：<code>rop = op1 * op2</code></td>
+<td><code>mpf_mul(c, a, b);</code></td>
+</tr>
+<tr class="even">
+<td><code>void mpf_div(mpf_t rop, const mpf_t op1, const mpf_t op2)</code></td>
+<td>除法：<code>rop = op1 / op2</code></td>
+<td><code>mpf_div(c, a, b);</code></td>
+</tr>
+<tr class="odd">
+<td><code>void mpf_sqrt(mpf_t rop, const mpf_t op)</code></td>
+<td>平方根：<code>rop = sqrt(op)</code></td>
+<td><code>mpf_sqrt(f, a);</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="四通用工具函数"><strong>四、通用工具函数</strong></h4>
+<table>
+<colgroup>
+<col style="width: 53%" />
+<col style="width: 40%" />
+<col style="width: 6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>功能描述</th>
+<th>适用类型</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>size_t mpz_sizeinbase(const mpz_t op, int base)</code></td>
+<td>计算 <code>op</code> 在 <code>base</code> 进制下的位数（不含符号）</td>
+<td><code>mpz_t</code></td>
+</tr>
+<tr class="even">
+<td><code>int mpz_probab_prime_p(const mpz_t n, int reps)</code></td>
+<td>检测 <code>n</code> 是否为素数（<code>reps</code> 为 Miller-Rabin 测试次数，建议≥5）</td>
+<td><code>mpz_t</code></td>
+</tr>
+<tr class="odd">
+<td><code>void mpz_gcd(mpz_t rop, const mpz_t op1, const mpz_t op2)</code></td>
+<td>最大公约数：<code>rop = gcd(op1, op2)</code></td>
+<td><code>mpz_t</code></td>
+</tr>
+<tr class="even">
+<td><code>void mpz_lcm(mpz_t rop, const mpz_t op1, const mpz_t op2)</code></td>
+<td>最小公倍数：<code>rop = lcm(op1, op2)</code></td>
+<td><code>mpz_t</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="五格式符对照表"><strong>五、格式符对照表</strong></h4>
+<p>使用 <code>gmp_printf</code>/<code>gmp_scanf</code> 时，需匹配对应类型的格式符：</p>
+<table>
+<thead>
+<tr class="header">
+<th>数据类型</th>
+<th>格式符</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>mpz_t</code></td>
+<td><code>%Zd</code></td>
+<td><code>gmp_printf("a = %Zd\n", a);</code></td>
+</tr>
+<tr class="even">
+<td><code>mpq_t</code></td>
+<td><code>%Qd</code></td>
+<td><code>gmp_printf("q = %Qd\n", q);</code></td>
+</tr>
+<tr class="odd">
+<td><code>mpf_t</code></td>
+<td><code>%Ff</code></td>
+<td><code>gmp_printf("f = %Ff\n", f);</code></td>
+</tr>
+</tbody>
+</table>
+
+	</div>
+
+	<div class="page-template-comments">
+		
+	</div>
 </div>
 
+<div class="paginator">
+	
+</div>
+  
 			</div>
 
 			
