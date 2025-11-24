@@ -1,0 +1,16 @@
+/* Pwndbg 高亮基础样式：仅控制布局，颜色由 JS 动态生成 */
+pre code.language-pwndbg {
+  display: block !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  tab-size: 4 !important; /* 制表符宽度适配代码风格 */
+}
+
+/* 避免和主题默认样式冲突 */
+pre code.language-pwndbg::-webkit-scrollbar {
+  height: 6px !important;
+}
+pre code.language-pwndbg::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  border-radius: 3px !important;
+}
