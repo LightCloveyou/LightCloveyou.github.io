@@ -176,9 +176,10 @@
   position: relative;
 }
 .home-content-container .home-article-list .home-article-item .home-article-thumbnail +redefine-mobile() {
-  padding: 0 10px; /* 左右留边距，避免贴屏 */
-  padding-top: 41.58%; /* 保持相同比例，不改变 */
-  box-sizing: border-box; /* 确保 padding 不影响比例计算 */
+  width: 670px; /* 手机端占满屏幕宽度 */
+  height: 280px; /* 手机端自定义高度（按需改：250px/300px） */
+  padding: 0 8px; /* 左右留8px边距，更美观 */
+  box-sizing: border-box; /* 确保padding不影响宽度 */
 /* 平板端适配（可选，比例不变） */
 }
 .home-content-container .home-article-list .home-article-thumbnail +redefine-tablet() {
