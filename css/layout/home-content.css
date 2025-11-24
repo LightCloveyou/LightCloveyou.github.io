@@ -175,7 +175,16 @@
   overflow: hidden;
   position: relative;
 }
-.home-content-container .home-article-list .home-article-item .home-article-thumbnail img {
+.home-content-container .home-article-list .home-article-item .home-article-thumbnail +redefine-mobile() {
+  padding: 0 10px; /* 左右留边距，避免贴屏 */
+  padding-top: 41.58%; /* 保持相同比例，不改变 */
+  box-sizing: border-box; /* 确保 padding 不影响比例计算 */
+/* 平板端适配（可选，比例不变） */
+}
+.home-content-container .home-article-list .home-article-thumbnail +redefine-tablet() {
+  width: 80%; /* 平板端宽度占屏幕80%，高度按比例自动缩放 */
+}
+.home-content-container .home-article-list .home-article-thumbnail img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -183,7 +192,7 @@
   top: 50%;
   transform: translateY(-50%);
 }
-.home-content-container .home-article-list .home-article-item .home-article-title {
+.home-content-container .home-article-list .home-article-title {
   position: relative;
   font-weight: 600;
   font-size: 1.4rem;
@@ -193,60 +202,60 @@
   margin: 0;
 }
 @media (max-width: 768px) {
-  .home-content-container .home-article-list .home-article-item .home-article-title {
+  .home-content-container .home-article-list .home-article-title {
     font-size: 1.3rem;
   }
 }
 @media (max-width: 640px) {
-  .home-content-container .home-article-list .home-article-item .home-article-title {
+  .home-content-container .home-article-list .home-article-title {
     font-size: 1.2rem;
   }
 }
-.home-content-container .home-article-list .home-article-item .home-article-content {
+.home-content-container .home-article-list .home-article-content {
   word-wrap: break-word;
   text-align: justify;
   color: var(--default-text-color);
 }
-.home-content-container .home-article-list .home-article-item .home-article-meta-info-container {
+.home-content-container .home-article-list .home-article-meta-info-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 0.92rem;
   color: var(--third-text-color);
 }
-.home-content-container .home-article-list .home-article-item .home-article-meta-info-container .home-article-meta-info {
+.home-content-container .home-article-list .home-article-meta-info-container .home-article-meta-info {
   letter-spacing: 0.5px;
 }
-.home-content-container .home-article-list .home-article-item .home-article-meta-info-container .home-article-meta-info span {
+.home-content-container .home-article-list .home-article-meta-info-container .home-article-meta-info span {
   margin-right: 10px;
 }
-.home-content-container .home-article-list .home-article-item .home-article-meta-info-container .home-article-meta-info span:last-child {
+.home-content-container .home-article-list .home-article-meta-info-container .home-article-meta-info span:last-child {
   margin-right: 0;
 }
-.home-content-container .home-article-list .home-article-item .home-article-meta-info-container .home-article-meta-info span ul,
-.home-content-container .home-article-list .home-article-item .home-article-meta-info-container .home-article-meta-info span li {
+.home-content-container .home-article-list .home-article-meta-info-container .home-article-meta-info span ul,
+.home-content-container .home-article-list .home-article-meta-info-container .home-article-meta-info span li {
   display: inline;
 }
 @media (max-width: 640px) {
-  .home-content-container .home-article-list .home-article-item .home-article-meta-info-container .home-article-meta-info .home-article-category {
+  .home-content-container .home-article-list .home-article-meta-info-container .home-article-meta-info .home-article-category {
     display: none;
   }
 }
 @media (max-width: 768px) {
-  .home-content-container .home-article-list .home-article-item .home-article-meta-info-container .home-article-meta-info .home-article-tag {
+  .home-content-container .home-article-list .home-article-meta-info-container .home-article-meta-info .home-article-tag {
     display: none;
   }
 }
-.home-content-container .home-article-list .home-article-item .home-article-meta-info-container hr {
+.home-content-container .home-article-list .home-article-meta-info-container hr {
   border: none;
   flex: 1;
   height: 1px;
   background: var(--border-color);
   margin: 0 10px;
 }
-.home-content-container .home-article-list .home-article-item .home-article-meta-info-container a {
+.home-content-container .home-article-list .home-article-meta-info-container a {
   color: var(--third-text-color);
 }
-.home-content-container .home-article-list .home-article-item .home-article-meta-info-container a:hover {
+.home-content-container .home-article-list .home-article-meta-info-container a:hover {
   color: var(--primary-color);
 }
