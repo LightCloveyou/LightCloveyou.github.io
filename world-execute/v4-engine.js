@@ -29,7 +29,7 @@
   let w=innerWidth,h=innerHeight,dpr=1,raf=0;
   const chapterTimes=[0,29.28,44.04,58.65,73.53,88.34,103.03,110.4,134.38,176.96];
   function resize(){w=innerWidth;h=innerHeight;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);dirty=true;}
-  addEventListener('resize',resize);resize();
+  addEventListener('resize',resize);addEventListener('stagechange',()=>{dirty=true;});resize();
   function render(t){
     const si=which(SHOTS,t),li=which(D.lyrics,t),chapter=window.MV_DIRECTION.chapter(si);
     window.MV_DIRECTOR(ctx,started?t:20,started?si:5,musicAt(started?t:20),null,{w,h,field},started?SHOTS[si][0]:16.04,D.lyrics[li][0]);

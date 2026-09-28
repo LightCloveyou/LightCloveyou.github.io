@@ -41,3 +41,16 @@ body:not(.has-started) .head,body:not(.has-started) .shot-number,body:not(.has-s
 }
 @media(max-height:530px){.head{padding-top:15px}.shot-number{top:47px}.lyric-strip{bottom:81px}.transport{bottom:12px}.transport-row{margin-top:8px}.start-top{top:19px}.start-bottom{bottom:17px}.start h1{font-size:54px;margin:15px 0}.start p{display:none}.start-panel{padding-top:25px}.start-status{margin-top:4px}.start button{min-height:48px}.play-circle{width:42px;height:42px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* One material palette and readable controls throughout the complete film. */
+:root{--ink:#f4f5df;--accent:#d1f5a3;--dim:#8b9e86}
+#lyricText{font-size:clamp(18px,1.75vw,26px);font-weight:400;letter-spacing:.025em}
+.lyric-strip{bottom:119px;text-shadow:0 2px 12px #030605,0 0 28px #030605}
+.identity strong{font-size:13px}.head-right{font-size:11px}.shot-number{font-size:10px;color:#8b9e86}
+.edition{color:#8b9e86;font-size:9px}.settings select{font-size:11px}.time,.slash{font-size:11px}
+.particle-control{display:flex;align-items:center;gap:10px;font-size:11px;color:#c9d8c2;white-space:nowrap}
+#stageParticles{width:100px;height:3px}#stageCount{min-width:42px;text-align:right;font-variant-numeric:tabular-nums;color:#d1f5a3}
+#stageParticles::-webkit-slider-thumb{width:10px;height:10px}.settings #theme{display:none}
+@media(max-width:950px){.settings{gap:8px}.particle-control{gap:6px}#stageParticles{width:68px}#volume{display:none}.edition{display:none}}
+@media(max-width:700px){.transport-row{flex-wrap:wrap}.settings{width:100%;justify-content:space-between}.lyric-strip{bottom:150px}#lyricText{font-size:18px}.particle-control{font-size:10px}.head-right{font-size:9px}.transport{bottom:18px}}
+@media(max-height:530px){.lyric-strip{bottom:90px}#lyricText{font-size:16px}.head{padding-top:12px}.transport{bottom:10px}.transport-row{flex-wrap:nowrap}.particle-control span{display:none}}

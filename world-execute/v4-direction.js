@@ -3,7 +3,7 @@
 (() => {
   'use strict';
   const TAU = Math.PI * 2;
-  const P = { ink:'#eceee5', lime:'#cbefa1', purple:'#b5a0e5', red:'#ef806f', amber:'#d9bd83', dim:'#65736a', dark:'#28342c' };
+  const P = { ink:'#f4f5df', lime:'#d1f5a3', purple:'#cba7ff', red:'#ff947b', amber:'#e6c99b', dim:'#8b9e86', dark:'#28342c' };
   const clamp = (v,a=0,b=1) => Math.max(a,Math.min(b,v));
   const ease = v => { v=clamp(v); return v*v*(3-2*v); };
   const hash = n => { const x=Math.sin(n*127.1+41.7)*43758.5453; return x-Math.floor(x); };
@@ -15,33 +15,36 @@
   window.MV_DIRECTION = { chapter, chapters, names };
   window.MV_DIRECTOR = (c,t,si,m,word,view,shotStart,lyricStart) => {
     const {w,h,field} = view;
-    const mobile=w<700, scale=Math.min(w/(mobile?820:1440),(h-145)/(mobile?680:680));
+    const mobile=w<700, scale=Math.min(w/1100,Math.max(140,h-205)/490);
+    const zoom=window.MV_MATERIAL?.scaleAt(si,t)||1, next=window.MV_MATERIAL?.starts[si+1]??214;
+    const semanticOpacity=ease((t-shotStart)/.6)*(1-ease((t-next+.5)/.5));
     const u=t-shotStart, entry=ease(u/.6), accent=si>=27&&si<=33?P.red:si>=17&&si<=24?P.purple:P.lime;
-    const cx=w/2, cy=h*.475, pulse=m.hit, breath=1+Math.sin(t*1.6)*.012;
-    c.fillStyle='#030605';c.fillRect(0,0,w,h);
-    c.save();c.translate(cx,cy);c.scale(scale,scale);
+    const cx=w/2, cy=(h-120)*.51+24, pulse=m.hit, breath=1+Math.sin(t*1.6)*.012;
+    c.fillStyle='#030605';c.fillRect(0,0,w,h);window.MV_ACTIONS?.rain(c,t,w,h);
+    c.save();c.translate(cx,cy);c.scale(scale*zoom,scale*zoom);
     function line(points,color=P.ink,alpha=1,width=1) {
-      c.globalAlpha=alpha;c.strokeStyle=color;c.lineWidth=width;c.beginPath();
+      c.globalAlpha=alpha*semanticOpacity;c.strokeStyle=color;c.lineWidth=width;c.beginPath();
       points.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.stroke();c.globalAlpha=1;
     }
     function text(s,x,y,size=11,color=P.dim,align='center',alpha=1) {
-      c.globalAlpha=alpha;c.fillStyle=color;c.font=`${size}px "Cascadia Code",Consolas,monospace`;c.textAlign=align;c.textBaseline='middle';c.fillText(s,x,y);c.globalAlpha=1;
+      if(s!=='@'&&s!=='_')return;
+      c.globalAlpha=alpha*semanticOpacity;c.fillStyle=color;c.font=`${Math.max(13,size*1.1)}px "Cascadia Code",Consolas,monospace`;c.textAlign=align;c.textBaseline='middle';c.fillText(s,x,y);c.globalAlpha=1;
     }
     function dot(x,y,r=1.5,color=P.ink,alpha=1) {
-      c.globalAlpha=alpha;c.fillStyle=color;c.beginPath();c.arc(x,y,r,0,TAU);c.fill();c.globalAlpha=1;
+      c.globalAlpha=alpha*semanticOpacity;c.fillStyle=color;c.beginPath();c.arc(x,y,r,0,TAU);c.fill();c.globalAlpha=1;
     }
     function ring(x,y,r,color=P.ink,alpha=1,start=0,end=TAU,width=1) {
-      c.globalAlpha=alpha;c.strokeStyle=color;c.lineWidth=width;c.beginPath();c.arc(x,y,Math.max(.01,r),start,end);c.stroke();c.globalAlpha=1;
+      c.globalAlpha=alpha*semanticOpacity;c.strokeStyle=color;c.lineWidth=width;c.beginPath();c.arc(x,y,Math.max(.01,r),start,end);c.stroke();c.globalAlpha=1;
     }
     function orbit(x,y,rx,ry,color,alpha=1,angle=0) {
-      c.globalAlpha=alpha;c.strokeStyle=color;c.lineWidth=1;c.beginPath();c.ellipse(x,y,rx,ry,angle,0,TAU);c.stroke();c.globalAlpha=1;
+      c.globalAlpha=alpha*semanticOpacity;c.strokeStyle=color;c.lineWidth=1;c.beginPath();c.ellipse(x,y,rx,ry,angle,0,TAU);c.stroke();c.globalAlpha=1;
     }
     function box(x,y,w,h,color=P.dim,alpha=1) { line([[x,y],[x+w,y],[x+w,y+h],[x,y+h],[x,y]],color,alpha); }
     function core(x=0,y=0,r=32,color=accent,alpha=1) {
       ring(x,y,r,color,alpha*.55);ring(x,y,r+6,color,alpha*.17);
       text('@',x,y+1,r*.85,P.ink,'center',alpha);
     }
-    function glyph(x,y,g,color=P.ink,alpha=1,size=11) { text(g,x,y,size,color,'center',alpha); }
+    function glyph(x,y,g,color=P.ink,alpha=1,size=11) { c.globalAlpha=alpha*semanticOpacity;c.fillStyle=color;c.font=size+'px Consolas,monospace';c.textAlign='center';c.textBaseline='middle';c.fillText(String(g).replace(/[▓▒▰▦▪]/g,'#').replace(/[·●•]/g,'.'),x,y);c.globalAlpha=1; }
     function wave(x,y,len,amp,phase,color=P.lime,alpha=1) {
       const p=[];for(let i=0;i<=len;i+=3)p.push([x+i,y+Math.sin(i*.034-phase)*amp]);line(p,color,alpha,1.5);
     }
@@ -56,153 +59,13 @@
         dot(x,y,.7+z*.9,color,.15+z*.65);
       }
     }
-    function detailedWorld() {
-      if(si===39&&u>4.7)return;
-      const ending=si===39?1-ease(u/4.7):si===38?1-ease((t-200)/5)*.8:1;
-      const group=chapter(si),hot=si>=27&&si<=33,form=si>=17&&si<=20;
-      const col=hot?P.red:form?P.purple:accent,secondary=hot?P.amber:P.purple;
-      const tick=Math.floor(t*8),hex=(n,l=4)=>Math.floor(Math.abs(n)).toString(16).toUpperCase().padStart(l,'0');
-      // Depth plane: glyph dust and address fragments, with a soft subject exclusion.
-      for(let i=0;i<680;i++){
-        const x=(hash(i*7+group*29)-.5)*1350;
-        const y=((hash(i*13)*540+t*(5+hash(i*3)*11))%540)-270;
-        const safe=clamp((Math.hypot(x/1.4,y)-125)/180);
-        if(safe<.1)continue;
-        const lum=(.07+hash(i*17)*.25)*safe*ending;
-        glyph(x,y,i%11===0?hex(i+tick,2).slice(-2):i%4===0?'1':i%3===0?'·':'+',i%13?col:P.ink,lum,i%11?8:7);
-      }
-      // Fine cartesian registration crosses make the field read as an active substrate.
-      for(let x=-650;x<=650;x+=42)for(let y=-250;y<=250;y+=42){
-        if(Math.abs(x)<275&&Math.abs(y)<194)continue;
-        dot(x,y,.65,P.dim,.24*ending);
-        if((Math.round(x/42)+Math.round(y/42))%5===0)line([[x-3,y],[x+3,y]],col,.16*ending);
-      }
-      const midR=form?216:si>=30&&si<=32?277:225;
-      // Segmented calibration halo; gaps preserve the focal silhouette.
-      for(let i=0;i<120;i++){
-        const a=i/120*TAU+t*.027*(hot?-1:1),r=midR+(i%5?0:4);
-        const rx=hot?1.14:1.08,ry=hot?.71:.92;
-        const p=[Math.cos(a)*r*rx,Math.sin(a)*r*ry],q=[Math.cos(a)*(r+(i%10===0?12:4))*rx,Math.sin(a)*(r+(i%10===0?12:4))*ry];
-        line([p,q],i%10?col:P.ink,(i%10?.3:.65)*ending);
-        if(i%20===0)text(hex(i*64+si*128),p[0]*1.12,p[1]*1.12,7,col,'center',.6*ending);
-      }
-      for(let i=0;i<5;i++){
-        const a=t*.08+i*1.256,rr=midR+22+i%2*8;
-        c.save();c.scale(1.1,.89);ring(0,0,rr,col,.21*ending,a,a+.57,2);c.restore();
-      }
-      // Branch-specific architectural midground. This is not one repeated HUD skin.
-      if(si<=5){
-        // PCB traces carry packets towards the assembling machine.
-        for(let side of [-1,1])for(let j=0;j<14;j++){
-          const yy=-176+j*27,terminal=260+hash(j*5)*70,bend=390+hash(j*17)*80;
-          const p=[[side*665,yy],[side*bend,yy],[side*(bend-32),yy+(j%2?22:-22)],[side*terminal,yy+(j%2?22:-22)]];
-          line(p,P.lime,(.18+j%3*.07)*ending);dot(side*terminal,p[3][1],2,P.lime,.55*ending);
-          const q=(t*.6+j*.13)%1;dot(side*mix(660,terminal,q),q<.6?yy:p[3][1],1.8,P.ink,.55*ending);
-        }
-        for(let side of [-1,1])for(let j=0;j<3;j++){
-          const x=side*506,y=-125+j*122;box(x-35,y-20,70,40,P.lime,.45*ending);
-          text(['RAM','GPU','I/O'][j],x,y,9,P.lime,'center',.85*ending);
-          for(let k=0;k<7;k++){line([[x-47,y-15+k*5],[x-36,y-15+k*5]],P.lime,.3*ending);line([[x+36,y-15+k*5],[x+47,y-15+k*5]],P.lime,.3*ending);}
-        }
-        if(si>=4)for(let j=0;j<14;j++){
-          const y=170+j*6,p=[];for(let x=-620;x<=620;x+=15)p.push([x,y+Math.sin(x*.008+t*.4+j*.2)*(j+1)*1.2]);line(p,P.lime,.12*ending);
-        }
-      }else if(si<=13){
-        // Small projected vertex objects and annotated coordinate construction.
-        for(let side of [-1,1]){
-          const x=side*454,y=-25,verts=[];
-          for(let k=0;k<8;k++){const p=proj((k&1?1:-1)*51,(k&2?1:-1)*51,(k&4?1:-1)*51,t*.23*side);verts.push([p[0]+x,p[1]+y]);}
-          for(let k=0;k<8;k++)for(let b of [1,2,4])if(!(k&b))line([verts[k],verts[k|b]],side<0?P.lime:P.purple,.44*ending);
-          verts.forEach((p,k)=>{dot(p[0],p[1],2,P.ink,.6*ending);text('v'+k,p[0]+9,p[1]-7,7,P.dim,'left',ending);});
-          for(let j=0;j<6;j++)text((side<0?'x':'y')+'['+j+']  '+Math.sin(t*.3+j).toFixed(5),x-65,90+j*13,8,side<0?P.lime:P.purple,'left',.6*ending);
-        }
-        for(let j=0;j<8;j++){
-          const y=-215+j*10;wave(-620,y,220,3+Math.sin(j+t)*2,t*2+j,P.lime,.3*ending);wave(400,y,220,3+Math.cos(j+t)*2,t*2-j,P.purple,.3*ending);
-        }
-      }else if(si<=16||si>=30&&si<=33){
-        // Fork trees accumulate instead of throwing unrelated particles at the center.
-        for(let side of [-1,1])for(let layer=0;layer<5;layer++){
-          const count=2**layer,x=side*(315+layer*66);
-          for(let k=0;k<count;k++){
-            const y=(k+.5)/count*370-185,parentY=(Math.floor(k/2)+.5)/Math.max(1,count/2)*370-185;
-            if(layer)line([[side*(315+(layer-1)*66),parentY],[side*(x*side-28),parentY],[x,y]],col,(.28+layer*.025)*ending);
-            const active=(k+layer+tick)%7<3;box(x-4,y-4,8,8,active?P.ink:col,(active?.9:.35)*ending);
-            if(layer===4)text(hex(400+k*7+si),x+side*10,y,7,col,side>0?'left':'right',.55*ending);
-          }
-        }
-      }else if(form){
-        // Material analysis: molecular chains, character atlas and emitted packets.
-        for(let side of [-1,1]){
-          const x=side*456;
-          for(let j=0;j<18;j++){
-            const y=-183+j*19,a=j*.63+t*.55,x1=x+Math.sin(a)*64,x2=x-Math.sin(a)*64;
-            line([[x1,y],[x2,y]],side<0?P.lime:col,.26*ending);
-            dot(x1,y,2.6,P.lime,.7*ending);dot(x2,y,2.1,col,.7*ending);
-            if(j){const py=y-19,pa=a-.63;line([[x+Math.sin(pa)*64,py],[x1,y]],P.lime,.44*ending);line([[x-Math.sin(pa)*64,py],[x2,y]],col,.4*ending);}
-            if(j%3===0)text((si===19?['44Hz','88Hz','SND'][j%3]:['C','N','K'][j%3])+' / '+hex(j*117+tick),x+side*84,y,8,P.dim,side>0?'left':'right',.8*ending);
-          }
-        }
-        for(let j=0;j<8;j++)for(let k=0;k<20;k++){
-          const x=-122+k*13,y=-257+j*6;
-          glyph(x,y,' .:+*#'[Math.floor(hash(j*31+k+Math.floor(t*3))*6)],col,.24*ending,6);
-        }
-        for(let i=0;i<24;i++){
-          const a=hash(i*17)*TAU,q=(u*.25+hash(i*11))%1,r=260+q*95;
-          glyph(Math.cos(a)*r*1.1,Math.sin(a)*r*.73,si===19?'~':i%3?'K+':'B6',i%3?col:P.lime,(1-q)*.62*ending,9);
-        }
-      }else if(si<=26){
-        for(let side of [-1,1])for(let j=0;j<5;j++){
-          wave(side<0?-638:360,-180+j*78,275,7+m.bass*10,t*(2+j*.3),j%2?col:P.lime,.45*ending);
-          text(['ADC.0','CLOCK','PHASE','GAIN','SYNC'][j],side<0?-638:360,-202+j*78,8,P.dim,'left',ending);
-          line([[side<0?-638:360,-158+j*78],[side<0?-362:638,-158+j*78]],P.dim,.18*ending);
-        }
-      }else if(si<=29){
-        // Memory cells deallocate; lost links have their own shrinking histories.
-        for(let side of [-1,1])for(let row=0;row<24;row++){
-          const x=side<0?-636:366,y=-192+row*16;
-          text(hex(row*256+si*4096,6),x,y,7,P.dim,'left',.8*ending);
-          for(let k=0;k<16;k++){
-            const alive=hash(row*16+k)>clamp(u/12,0,.85);
-            glyph(x+61+k*11,y,alive?hex((row*31+k*7+tick)%16,1):'·',alive?col:P.dim,(alive?.57:.23)*ending,8);
-          }
-        }
-      }else{
-        // A small inference graph paired with live residuals.
-        for(let side of [-1,1])for(let layer=0;layer<4;layer++)for(let n=0;n<7;n++){
-          const x=side*(340+layer*75),y=(n-3)*48;
-          if(layer<3)for(let dest=0;dest<7;dest++)if(hash(layer*71+n*11+dest)>.45)line([[x,y],[side*(415+layer*75),(dest-3)*48]],side<0?P.lime:P.purple,(.07+m.hit*.12)*ending);
-          ring(x,y,4,side<0?P.lime:P.purple,.55*ending);dot(x,y,1.4,P.ink,(.2+hash(n+tick)*.6)*ending);
-        }
-      }
-      if(mobile)return;
-      // Dense edge instrumentation with real, time-derived values. Fixed safe regions.
-      const labelLeft=['BOOT SEQUENCE','VERTEX BUFFER','CLOCK DOMAIN','FORK / PROCESS MAP','MATERIAL / GLYPH BUFFER','CONFIGURATION','SIGNAL ANALYSIS','MEMORY / CONNECTION','EXECUTION STACK','NEURAL WEIGHTS'][group];
-      const labelRight=['DATA BUS / 128 BIT','TRANSFORM MATRIX','PHASE / TIME','OPTIMIZATION BRANCH','OUTPUT / EMISSION','STATE TRANSITION','SPECTRAL DENSITY','PACKET HISTORY','RECURSION / HEAT','LIVE RESIDUAL'][group];
-      for(const [x,label] of [[-635,labelLeft],[361,labelRight]]){
-        line([[x,-247],[x+276,-247]],col,.5*ending);text(label,x,-260,9,col,'left',.9*ending);
-        for(let k=0;k<32;k++){const ht=2+hash(k*7+group)*11*(.35+m.level);line([[x+k*8.6,231],[x+k*8.6,231-ht]],k%6?col:P.ink,.55*ending,2);}
-        text('0x'+hex(t*4096,8)+'  /  '+Math.floor(m.level*1000)+' mV',x,247,8,P.dim,'left',ending);
-      }
-      for(let side of [-1,1]){
-        const x=side*688;for(let j=0;j<45;j++){const y=-265+j*12;line([[x,y],[x-side*(j%5?4:10),y]],col,(j%5?.2:.55)*ending);}
-      }
-      // Fine transport marks above and below the subject, never through its face.
-      for(let i=0;i<47;i++){const x=-300+i*13;dot(x,-283,.65,col,.3*ending);dot(x,291,.65,col,.3*ending);}
-      text('FRAME '+String(Math.floor(t*60)).padStart(6,'0')+'   /   PCM '+hex(m.bass*65535),0,-284,8,P.dim,'center',ending);
-    }
-    // Quiet reference points; never a dashboard or a competing full-screen texture.
-    if(field!=='black') {
-      for(let i=0;i<100;i++) { const x=(hash(i*7)-.5)*1300,y=(hash(i*11)-.5)*530;
-        if(field==='scan')line([[-650,y],[650,y]],P.dim,.025);
-        else if(field==='snow')glyph(x,y,'.',P.dim,.12+hash(i+t)*.08);
-        else {line([[x,y],[x+16,y],[x+16,y+10]],P.dim,.1);}
-      }
-    }
-    detailedWorld();
+    const particleCount=window.MV_MATERIAL?.draw(c,t,si,m)||0;
+    const screen=c.canvas;
+    if(screen?.dataset){screen.dataset.stageParticles=String(particleCount);screen.dataset.particleBudget=String(window.MV_STAGE_COUNT||3600);screen.dataset.stageUpgrade='scoped-ascii-revision';screen.dataset.material='ascii-characters';screen.dataset.background='dense-lyric-rain';if(si===12)screen.dataset.era=window.MV_MATERIAL.yearLabel(window.MV_MATERIAL.yearAt(t));else delete screen.dataset.era;}
     c.save();
     // A restrained entrance, no flips, shakes, random per-word cuts or screen flashes.
     c.globalAlpha=.3+.7*entry;
-    const systemScene=window.MV_OS_SCENES?.({c,t,si,u,m,line,text,dot,ring,box,core,glyph,wave});
+    const systemScene=window.MV_MATERIAL&&[1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,18,21,22,23,24,25,27,29,30,31,32,33,34,35].includes(si);
     if(systemScene){ /* The scene's visual action is an actual subsystem operation. */ }
     else if(si<=3){
       if(si===0){
@@ -400,7 +263,7 @@
       if(u>4.7&&u<6)text('_',0,0,24,P.lime,'center',1-ease((u-4.7)/1.2));
     }
     c.restore();
-    if(si!==5&&si!==39)text(notes[si],0,272,11,P.dim);
+    // The lyric carries the explanation; avoid a second row of tiny code captions.
     if(si===39&&u<4.7)text(notes[si],0,120,12,P.dim,'center',1-ease(u/4.7));
     c.restore();
   };
